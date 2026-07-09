@@ -1,6 +1,5 @@
 from matrix_library.matrix import Matrix
 
-
 class WebGraph:
     def __init__(self, n_pages: int):
         self.n_pages = n_pages
@@ -26,8 +25,6 @@ class WebGraph:
             for j in range(matrix_t.cols):
                 if row_sum > 0:
                     matrix_t.data[i][j] /= row_sum
-                else:
-                    matrix_t.data[i][j] = 1 / matrix_t.rows
         return matrix_t.transpose()
 
     def sumcheck(self) -> bool:
