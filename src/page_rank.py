@@ -25,12 +25,21 @@ class PageRank:
     def google_matrix(self, M: Matrix) -> Matrix:
         n = M.rows
         d = self.damping
+        
         dangling = []
         for j in range(n):
             col_sum = sum(M.data[i][j] for i in range(n))
             dangling.append(1 if col_sum < 1e-10 else 0)
-        teleport = (1-d)/n
-        g_data = [[d* M.data[row][column] + teleport for column in range(M.cols)]for row in range(M.rows)]
+        
+        teleport = (1 - d) / n
+        g_data = []
+        for row in range(n):
+            g_row = []
+            for col in range(n):
+                dangling_fix = d * dangling[col] / n
+                g_row.append(d * M.data[row][col] + dangling_fix + teleport)
+            g_data.append(g_row)
+        
         return Matrix(g_data)
 
     def rank(self) -> list[tuple[int, float]]:

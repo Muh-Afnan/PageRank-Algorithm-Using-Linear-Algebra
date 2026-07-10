@@ -144,9 +144,6 @@ class TestPageRank(unittest.TestCase):
         pr = PageRank()
         my_scores = pr.fit(g)
 
-        print("My scores:  ", my_scores)
-        print("NX scores:  ", nx_scores)
-
         # build same graph in networkx
         G = nx.DiGraph()
         G.add_nodes_from(range(4))
@@ -157,6 +154,11 @@ class TestPageRank(unittest.TestCase):
 
         nx_scores_dict = nx.pagerank(G, alpha=0.85)
         nx_scores = [nx_scores_dict[i] for i in range(4)]
+        nx_scores_dict = nx.pagerank(G, alpha=0.85)
+        nx_scores = [nx_scores_dict[i] for i in range(4)]
+
+        print("My scores:  ", my_scores)
+        print("NX scores:  ", nx_scores)
 
         # compare distributions (allow tolerance)
         for a, b in zip(my_scores, nx_scores):

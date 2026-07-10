@@ -6,7 +6,7 @@ class WebGraph:
         self.matrix = self.adjacency_matrix()
 
     def add_link(self, from_page: int, to_page: int):
-        self.matrix.data[from_page][to_page] = 1
+        self.matrix.data[to_page][from_page] = 1
 
     def remove_link(self, from_page: int, to_page: int):
         if self.matrix is not None:
@@ -19,13 +19,16 @@ class WebGraph:
         return self.matrix
 
     def transition_matrix(self) -> "Matrix":
-        matrix_t = self.matrix.transpose()
-        for i in range(matrix_t.rows):
-            row_sum = sum(matrix_t.data[i])
-            for j in range(matrix_t.cols):
-                if row_sum > 0:
-                    matrix_t.data[i][j] /= row_sum
-        return matrix_t.transpose()
+        n = self.matrix.rows
+        # column j = outgoing links from node j
+        # normalize each column to sum to 1
+        data = [[0.0] * n for _ in range(n)]
+        for j in range(n):
+            col_sum = sum(self.matrix.data[i][j] for i in range(n))
+            for i in range(n):
+                if col_sum > 0:
+                    data[i][j] = self.matrix.data[i][j] / col_sum
+        return Matrix(data)
 
     def sumcheck(self) -> bool:
         matrix_tansition = self.transition_matrix()
